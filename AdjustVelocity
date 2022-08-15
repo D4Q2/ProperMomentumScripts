@@ -10,8 +10,6 @@ local helper = character.HumanoidRootPart:WaitForChild("Helper")
 local lastHitObject = nil
 local lastFloorMaterial = nil
 
-local onGroundLastFrame
-
 local function IsPlayerAirborne()
 	local floorMaterial = player.Character.Humanoid.FloorMaterial
 	return floorMaterial == nil or floorMaterial == Enum.Material.Air
@@ -36,7 +34,6 @@ end
 
 RunService.RenderStepped:Connect(function(deltaTime)
 	if lastHitObject ~= nil and IsPlayerAirborne() then
-		-- Do stuff to match momentum
 		local newVelocity = CalculateNewVelocity()
 		character.HumanoidRootPart.AssemblyLinearVelocity = newVelocity
 	end
