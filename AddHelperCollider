@@ -1,0 +1,25 @@
+local PlayersService = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+PlayersService.PlayerAdded:Connect(function(player)
+	player.Team = nil
+	player.TeamColor = BrickColor.Red()
+	player.CharacterAdded:Connect(function(character)
+		local root = character:WaitForChild("HumanoidRootPart")
+		local helper = Instance.new("Part")
+		local M = Instance.new("Weld")
+		M.Parent = root
+
+		
+		helper.Size = Vector3.new(2, 1, 1)
+		helper.CFrame = root.CFrame
+		helper.Parent = root
+		helper.Anchored = false
+		helper.CanCollide = false
+		helper.Transparency = 1
+		helper.Name = "Helper"
+		M.Part0 = root
+		M.Part1 = helper
+		M.C0 = CFrame.new(0,-2.5,0)
+	end)
+end)
