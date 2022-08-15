@@ -1,3 +1,3 @@
-Add `AddHelperCollider` to ServerScriptService
+Copy the contents of **AddHelperCollider** into `ServerScriptService`
 
-Add `AdjustVelocity` to StarterPlayer/StarterCharacterScripts
+Copy the contents of **AdjustVelocity** into `StarterPlayer`/`StarterCharacterScripts`
