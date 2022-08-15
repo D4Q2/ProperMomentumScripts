@@ -9,6 +9,12 @@ local helper = character.HumanoidRootPart:WaitForChild("Helper")
 
 local lastHitObject = nil
 local lastFloorMaterial = nil
+local lastGroundVelocity = Vector3.zero
+
+local airControl = 0.75
+if script:GetAttribute("AirControl") ~= nil then
+	airControl = script:GetAttribute("AirControl")
+end
 
 local function IsPlayerAirborne()
 	local floorMaterial = player.Character.Humanoid.FloorMaterial
@@ -17,24 +23,23 @@ end
 
 helper.Touched:connect(function(hitObject)
 	lastHitObject = hitObject
+	lastGroundVelocity = Vector3.zero
 end)
 
 local function CalculateNewVelocity()
 	local v = lastHitObject.AssemblyLinearVelocity
 	local c = character:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity
 	local newVelocity = v
-	if v.X == 0 then
-		newVelocity = Vector3.new(c.X, newVelocity.Y, newVelocity.Z)
-	end
-	if v.Z == 0 then
-		newVelocity = Vector3.new(newVelocity.X, newVelocity.Y, c.Z)
-	end
-	return Vector3.new(newVelocity.X, c.Y, newVelocity.Z)
+
+	return Vector3.new(newVelocity.X + lastGroundVelocity.X, c.Y, newVelocity.Z + lastGroundVelocity.Z)
 end
 
 RunService.RenderStepped:Connect(function(deltaTime)
 	if lastHitObject ~= nil and IsPlayerAirborne() then
 		local newVelocity = CalculateNewVelocity()
 		character.HumanoidRootPart.AssemblyLinearVelocity = newVelocity
+	end
+	if not IsPlayerAirborne() then
+		lastGroundVelocity = player.Character.HumanoidRootPart.AssemblyLinearVelocity * airControl
 	end
 end)
